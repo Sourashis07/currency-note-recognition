@@ -6,7 +6,7 @@ import torchvision.models as models
 from PIL import Image
 import io
 
-# Load model
+
 @st.cache_resource
 def load_model():
     model = models.resnet18(pretrained=False)
@@ -27,19 +27,19 @@ transform = transforms.Compose([
 
 st.title("💵 Currency Note Recognition App")
 
-# Sidebar mode selector
+
 option = st.sidebar.selectbox("Choose Mode", ["Camera Capture", "Image Upload"])
 
 
 def predict_image(img: Image.Image):
-    # Convert to RGB if not already
+   
     if img.mode != "RGB":
         img = img.convert("RGB")
 
-    # Preprocess image
+
     input_tensor = transform(img).unsqueeze(0)
 
-    # Prediction
+    
     with torch.no_grad():
         output = model(input_tensor)
         probs = torch.nn.functional.softmax(output, dim=1)
@@ -56,7 +56,7 @@ if option == "Camera Capture":
     camera_img = st.camera_input("Take a photo")
 
     if camera_img is not None:
-        # Read image from BytesIO
+       
         img = Image.open(camera_img)
 
         st.image(img, caption="Captured Image", use_container_width=True)
